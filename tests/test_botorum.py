@@ -7,6 +7,7 @@ import pytest
 
 
 from botorum import botorum
+from botorum import cloudformation
 
 
 @pytest.fixture
@@ -23,3 +24,6 @@ def test_content(response):
     """Sample pytest test function with the pytest fixture as an argument."""
     # from bs4 import BeautifulSoup
     # assert 'GitHub' in BeautifulSoup(response.content).title.string
+
+def test_hello():
+    assert botorum.hello('world') == "Hello world"
