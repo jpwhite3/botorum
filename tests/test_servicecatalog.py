@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 
 """Tests for `botorum.servicecatalog` package."""
+import sys
 import inspect
-# import pytest
+import pytest
 
 
 from botorum.servicecatalog.portfolio import Portfolio
@@ -17,6 +18,7 @@ def test_properties_exist():
     assert inspect.isfunction(Portfolio.create)
 
 
+@pytest.mark.skipif(sys.version_info < (3, 6), reason="requires python3.6")
 def test_methods_exist():
     # TODO: Figure out why ismethod test fails
     assert inspect.isfunction(Portfolio.list)
