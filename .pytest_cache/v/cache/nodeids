@@ -1,0 +1,8 @@
+[
+  "tests/test_botorum.py::test_content",
+  "tests/test_botorum.py::test_servicecatalog_package_exists",
+  "tests/test_botorum.py::test_servicecatalog_modules_exists",
+  "tests/test_servicecatalog.py::test_classes_exist",
+  "tests/test_servicecatalog.py::test_properties_exist",
+  "tests/test_servicecatalog.py::test_methods_exist"
+]

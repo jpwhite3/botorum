@@ -48,11 +48,13 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr htmlcov/
 
 lint: ## check style with flake8
+	find ./botorum -name '*.py' -exec autopep8 -i --max-line-length=300 {} +
+	find ./tests -name '*.py' -exec autopep8 -i --max-line-length=300 {} +
 	flake8 botorum tests
 
 test: ## run tests quickly with the default Python
 	py.test
-	
+
 
 test-all: ## run tests on every Python version with tox
 	tox

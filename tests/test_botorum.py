@@ -2,12 +2,12 @@
 # -*- coding: utf-8 -*-
 
 """Tests for `botorum` package."""
-
+import inspect
 import pytest
 
 
-from botorum import botorum
-from botorum import cloudformation
+from botorum import servicecatalog
+from botorum.servicecatalog import portfolio, product
 
 
 @pytest.fixture
@@ -25,5 +25,11 @@ def test_content(response):
     # from bs4 import BeautifulSoup
     # assert 'GitHub' in BeautifulSoup(response.content).title.string
 
-def test_hello():
-    assert botorum.hello('world') == "Hello world"
+
+def test_servicecatalog_package_exists():
+    assert inspect.ismodule(servicecatalog)
+
+
+def test_servicecatalog_modules_exists():
+    assert inspect.ismodule(portfolio)
+    assert inspect.ismodule(product)
