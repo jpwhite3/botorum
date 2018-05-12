@@ -1,8 +1,9 @@
 [
-  "tests/test_botorum.py::test_content",
   "tests/test_botorum.py::test_servicecatalog_package_exists",
   "tests/test_botorum.py::test_servicecatalog_modules_exists",
   "tests/test_servicecatalog.py::test_classes_exist",
-  "tests/test_servicecatalog.py::test_properties_exist",
-  "tests/test_servicecatalog.py::test_methods_exist"
+  "tests/test_servicecatalog.py::test_001_methods_exist",
+  "tests/test_servicecatalog.py::test_002_list_generator",
+  "tests/test_servicecatalog.py::test_003_instance_creation_and_deletion",
+  "tests/test_servicecatalog.py::test_004_instance_load"
 ]

@@ -1,1 +1,6 @@
-{}
+{
+  "tests/test_servicecatalog.py::test_instance_creation_and_deletion": true,
+  "tests/test_servicecatalog.py::test_instance_load": true,
+  "tests/test_servicecatalog.py::test_list_generator": true,
+  "tests/test_servicecatalog.py::test_methods_exist": true
+}
