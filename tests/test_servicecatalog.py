@@ -66,12 +66,18 @@ def test_002_list_generator(portfolio_config):
 
 def test_003_instance_creation(portfolio_config):
     test_portfolio = Portfolio(**portfolio_config)
-    assert test_portfolio.Id
-    assert test_portfolio.ARN
-    assert test_portfolio.CreatedTime
+    assert test_portfolio.Id == test_portfolio.id
+    assert test_portfolio.ARN == test_portfolio.arn
+    assert test_portfolio.CreatedTime == test_portfolio.created_time
+    assert test_portfolio.DisplayName == test_portfolio.display_name
+    assert test_portfolio.Description == test_portfolio.description
+    assert test_portfolio.ProviderName == test_portfolio.provider_name
     assert test_portfolio.DisplayName == portfolio_config['DisplayName']
     assert test_portfolio.Description == portfolio_config['Description']
     assert test_portfolio.ProviderName == portfolio_config['ProviderName']
+
+    with pytest.raises(AttributeError):
+        assert test_portfolio.ArbitraryAttr
 
     tag_list = portfolio_config['Tags']
     assert test_portfolio.Tags == {x['Key']: x['Value'] for x in tag_list}
