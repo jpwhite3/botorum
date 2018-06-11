@@ -35,18 +35,23 @@ class Portfolio(BaseModel):
         return cls(**object_details)
 
     @classmethod
-    def get(cls, portfolio_id):
+    def get(cls, object_id):
         """
         Get a portfolio by Id.
         Returns a Portfolio object.
         """
 
         client = cls.session.client(cls.Meta.boto3_client_name)
-        response = client.describe_portfolio(AcceptLanguage=cls.Meta.language, Id=portfolio_id)
-        object_details = response.get('PortfolioDetail', {})
-        object_details['tags'] = {x['Key']: x['Value'] for x in response.get('Tags', [])}
+        response = client.describe_portfolio(AcceptLanguage=cls.Meta.language, Id=object_id)
+        object_details = cls._flatten(response)
         object_details['tag_options'] = response.get('TagOptions', [])
         return cls(**object_details)
+
+    @staticmethod
+    def _flatten(response):
+        object_details = response.get('PortfolioDetail', {})
+        object_details['tags'] = {x['Key']: x['Value'] for x in response.get('Tags', [])}
+        return object_details
 
     def update(self, **kwargs):
         """
@@ -55,8 +60,8 @@ class Portfolio(BaseModel):
         Argument(s) mirror the boto3 "update_portfolio" API call, link below.
         https://boto3.readthedocs.io/en/latest/reference/services/servicecatalog.html#ServiceCatalog.Client.update_portfolio
         """
-        response = client.update_portfolio(
-            AcceptLanguage=cls.Meta.language,
+        response = self.client.update_portfolio(
+            AcceptLanguage=self.Meta.language,
             Id=self.id,
             DisplayName=kwargs.get('DisplayName', self.display_name),
             Description=kwargs.get('Description', self.description),
@@ -64,6 +69,8 @@ class Portfolio(BaseModel):
             AddTags=kwargs.get('AddTags', []),
             RemoveTags=kwargs.get('RemoveTags', [])
         )
+        object_details = self._flatten(response)
+        self._set_attrs(**object_details)
 
     def delete(self):
         """

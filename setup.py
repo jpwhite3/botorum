@@ -13,7 +13,8 @@ with open('HISTORY.rst') as history_file:
 
 requirements = [
     # TODO: put package requirements here
-    'boto3 >= 1.5.22'
+    'boto3 >= 1.5.22',
+    'six == 1.11.0'
 ]
 
 setup_requirements = [

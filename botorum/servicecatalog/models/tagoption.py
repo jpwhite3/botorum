@@ -21,8 +21,8 @@ class TagOption(BaseModel):
         return cls(**object_details)
 
     @classmethod
-    def get(cls, tagoption_id):
-        response = cls.get_client().describe_tag_option(Id=tagoption_id)
+    def get(cls, object_id):
+        response = cls.get_client().describe_tag_option(Id=object_id)
         object_details = response.get('TagOptionDetail', {})
         return cls(**object_details)
 
@@ -32,10 +32,9 @@ class TagOption(BaseModel):
         tagoption_details = response.get('TagOptionDetails', [])
         if tagoption_details:
             return cls(**tagoption_details[0])
-        else:
-            return cls.create(**kwargs)
+        return cls.create(**kwargs)
 
-    def update(self):
+    def update(self, **kwargs):
         pass
 
     def delete(self):

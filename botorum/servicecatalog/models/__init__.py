@@ -1,9 +1,11 @@
-from abc import ABC, abstractmethod
+import abc
+import six
 import boto3
 from botorum.common import camel_to_snake
 
 
-class BaseModel(ABC):
+@six.add_metaclass(abc.ABCMeta)
+class BaseModel():
 
     session = boto3.Session()
 
@@ -42,25 +44,25 @@ class BaseModel(ABC):
         return cls.session.client(cls.Meta.boto3_client_name)
 
     @classmethod
-    @abstractmethod
-    def list(cls):
+    @abc.abstractmethod
+    def list(cls, max_items=1000, page_size=20):
         pass
 
     @classmethod
-    @abstractmethod
+    @abc.abstractmethod
     def create(cls, **kwargs):
         pass
 
     @classmethod
-    @abstractmethod
+    @abc.abstractmethod
     def get(cls, object_id):
         pass
 
-    @abstractmethod
-    def update(self):
+    @abc.abstractmethod
+    def update(self, **kwargs):
         pass
 
-    @abstractmethod
+    @abc.abstractmethod
     def delete(self):
         pass
 

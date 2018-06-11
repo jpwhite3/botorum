@@ -50,7 +50,7 @@ clean-test: ## remove test and coverage artifacts
 lint: ## check style with flake8
 	find ./botorum -name '*.py' -exec autopep8 -i --max-line-length=300 {} +
 	find ./tests -name '*.py' -exec autopep8 -i --max-line-length=300 {} +
-	flake8 botorum tests
+	flake8 --ignore E501 botorum tests
 	pylint ./botorum
 
 test: ## run tests quickly with the default Python

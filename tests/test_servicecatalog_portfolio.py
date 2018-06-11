@@ -45,6 +45,7 @@ def test_001_methods_exist():
     assert inspect.isfunction(Portfolio.__str__)
     assert inspect.isfunction(Portfolio.__unicode__)
     assert inspect.isfunction(Portfolio._set_attrs)
+    assert inspect.isfunction(Portfolio._flatten)
     assert inspect.isgeneratorfunction(Portfolio.list)
     assert inspect.ismethod(Portfolio.create)
     assert inspect.ismethod(Portfolio.get)
