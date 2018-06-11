@@ -1,9 +1,19 @@
 [
   "tests/test_botorum.py::test_servicecatalog_package_exists",
   "tests/test_botorum.py::test_servicecatalog_modules_exists",
-  "tests/test_servicecatalog.py::test_classes_exist",
-  "tests/test_servicecatalog.py::test_001_methods_exist",
-  "tests/test_servicecatalog.py::test_002_list_generator",
-  "tests/test_servicecatalog.py::test_003_instance_creation_and_deletion",
-  "tests/test_servicecatalog.py::test_004_instance_load"
+  "tests/test_common.py::test_camel_to_snake",
+  "tests/test_servicecatalog_portfolio.py::test_classes_exist",
+  "tests/test_servicecatalog_portfolio.py::test_001_methods_exist",
+  "tests/test_servicecatalog_portfolio.py::test_002_list_generator",
+  "tests/test_servicecatalog_portfolio.py::test_003_instance_creation",
+  "tests/test_servicecatalog_portfolio.py::test_004_instance_attributes",
+  "tests/test_servicecatalog_portfolio.py::test_005_instance_load",
+  "tests/test_servicecatalog_portfolio.py::test_999_teardown",
+  "tests/test_servicecatalog_tagoption.py::test_classes_exist",
+  "tests/test_servicecatalog_tagoption.py::test_001_methods_exist",
+  "tests/test_servicecatalog_tagoption.py::test_002_list_generator",
+  "tests/test_servicecatalog_tagoption.py::test_003_instance_creation",
+  "tests/test_servicecatalog_tagoption.py::test_004_instance_attributes",
+  "tests/test_servicecatalog_tagoption.py::test_005_instance_load",
+  "tests/test_servicecatalog_tagoption.py::test_999_teardown"
 ]

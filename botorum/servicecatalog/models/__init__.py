@@ -35,7 +35,11 @@ class BaseModel(ABC):
 
     @property
     def client(self):
-        return self.session.client(self.Meta.boto3_client_name)
+        return self.__class__.get_client()
+
+    @classmethod
+    def get_client(cls):
+        return cls.session.client(cls.Meta.boto3_client_name)
 
     @classmethod
     @abstractmethod

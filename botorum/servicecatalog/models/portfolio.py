@@ -6,20 +6,12 @@ class Portfolio(BaseModel):
     @classmethod
     def list(cls, max_items=1000, page_size=20):
         """
-        Generator function that lists all portfolios in the account.
-        Paginates 20 items per page by default, the max as of this writing.
+        Generator function that iterates over all portfolios in the account. Paginates 20 items per API call by default, the max as of this writing.
+        Returns Portfolio object.
         https://boto3.readthedocs.io/en/latest/reference/services/servicecatalog.html#ServiceCatalog.Paginator.ListPortfolios
-
-        Keyword Arguments:
-            MaxItems {int} -- The total # of items to return (default: {1000})
-            PageSize {int} -- The size of each page (default: {20})
-
-        Returns:
-            Dict -- Portfolio details from boto3 response
         """
 
-        client = cls.session.client(cls.Meta.boto3_client_name)
-        paginator = client.get_paginator('list_portfolios')
+        paginator = cls.get_client().get_paginator('list_portfolios')
         response_iterator = paginator.paginate(
             AcceptLanguage=cls.Meta.language,
             PaginationConfig={'MaxItems': max_items, 'PageSize': page_size}
@@ -30,14 +22,25 @@ class Portfolio(BaseModel):
 
     @classmethod
     def create(cls, **kwargs):
-        client = cls.session.client(cls.Meta.boto3_client_name)
-        response = client.create_portfolio(**kwargs)
+        """
+        Create a new portfolio.
+        Arguments mirror the boto3 "create_portfolio" API call, link below.
+        Returns a Portfolio object.
+        https://boto3.readthedocs.io/en/latest/reference/services/servicecatalog.html#ServiceCatalog.Client.create_portfolio
+        """
+
+        response = cls.get_client().create_portfolio(**kwargs)
         object_details = response.get('PortfolioDetail', {})
         object_details['tags'] = {x['Key']: x['Value'] for x in response.get('Tags', [])}
         return cls(**object_details)
 
     @classmethod
     def get(cls, portfolio_id):
+        """
+        Get a portfolio by Id.
+        Returns a Portfolio object.
+        """
+
         client = cls.session.client(cls.Meta.boto3_client_name)
         response = client.describe_portfolio(AcceptLanguage=cls.Meta.language, Id=portfolio_id)
         object_details = response.get('PortfolioDetail', {})
@@ -45,16 +48,27 @@ class Portfolio(BaseModel):
         object_details['tag_options'] = response.get('TagOptions', [])
         return cls(**object_details)
 
-    def update(self):
-        pass
+    def update(self, **kwargs):
+        """
+        Updates the following attributes of the Portfolio object: DisplayName, Description, ProviderName, Tags
+        Returns the Portfolio object.
+        Argument(s) mirror the boto3 "update_portfolio" API call, link below.
+        https://boto3.readthedocs.io/en/latest/reference/services/servicecatalog.html#ServiceCatalog.Client.update_portfolio
+        """
+        response = client.update_portfolio(
+            AcceptLanguage=cls.Meta.language,
+            Id=self.id,
+            DisplayName=kwargs.get('DisplayName', self.display_name),
+            Description=kwargs.get('Description', self.description),
+            ProviderName=kwargs.get('ProviderName', self.provider_name),
+            AddTags=kwargs.get('AddTags', []),
+            RemoveTags=kwargs.get('RemoveTags', [])
+        )
 
     def delete(self):
         """
         Delete this portfolio object by calling boto3 delete_potfolio.
         https://boto3.readthedocs.io/en/latest/reference/services/servicecatalog.html#ServiceCatalog.Client.delete_portfolio
-
-        Returns:
-            Dict -- Empty dict from boto3 response
         """
         return self.client.delete_portfolio(
             AcceptLanguage=self.Meta.language,
