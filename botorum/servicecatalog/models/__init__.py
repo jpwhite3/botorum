@@ -1,10 +1,8 @@
-import os
 import abc
 import six
 import boto3
 from botorum.common import camel_to_snake
 
-os.environ['AWS_DEFAULT_REGION'] = 'us-east-1'
 
 @six.add_metaclass(abc.ABCMeta)
 class BaseModel():
