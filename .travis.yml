@@ -8,6 +8,10 @@ python:
 
 cache: pip
 
+env:
+  global:
+    - AWS_DEFAULT_REGION=us-east-1
+
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install -U tox-travis
 
