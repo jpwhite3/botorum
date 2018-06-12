@@ -8,6 +8,8 @@ python:
 
 env:
   - AWS_DEFAULT_REGION=us-east-1
+  - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+  - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install -U tox-travis
