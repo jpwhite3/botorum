@@ -94,6 +94,34 @@ def test_005_instance_load(portfolio_config):
     assert not test_portfolio != arbitrary_portfolio
 
 
+def test_006_instance_update(portfolio_config):
+    test_portfolio = Portfolio.create(**portfolio_config)
+    assert test_portfolio.DisplayName == portfolio_config['DisplayName']
+    assert test_portfolio.Description == portfolio_config['Description']
+    assert test_portfolio.ProviderName == portfolio_config['ProviderName']
+    assert test_portfolio.tags == {x['Key']: x['Value'] for x in portfolio_config['Tags']}
+
+    update_params = {
+        "DisplayName": "NewName",
+        "Description": "NewDescription",
+        "ProviderName": "NewProvider",
+        "AddTags": [
+            {
+                'Key': 'example',
+                'Value': 'example'
+            },
+        ],
+        "RemoveTags": [
+            "arbitrary"
+        ]
+    }
+    test_portfolio.update(**update_params)
+    assert test_portfolio.DisplayName == update_params["DisplayName"]
+    assert test_portfolio.Description == update_params["Description"]
+    assert test_portfolio.ProviderName == update_params["ProviderName"]
+    assert test_portfolio.tags == {x['Key']: x['Value'] for x in update_params['AddTags']}
+
+
 def test_999_teardown():
     for p in Portfolio.list():
         portfolio = Portfolio(id=p.Id)

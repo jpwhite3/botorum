@@ -35,7 +35,13 @@ class TagOption(BaseModel):
         return cls.create(**kwargs)
 
     def update(self, **kwargs):
-        pass
+        response = self.client.update_tag_option(
+            Id=self.id,
+            Value=kwargs.get('Value', self.value),
+            Active=kwargs.get('Active', self.active),
+        )
+        object_details = response.get('TagOptionDetail', {})
+        self._set_attrs(**object_details)
 
     def delete(self):
         return self.client.delete_tag_option(

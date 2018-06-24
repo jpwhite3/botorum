@@ -42,8 +42,8 @@ def test_002_list_generator(tagoption_config):
     assert test_tagoption == all_tagoptions[0]
 
 
-def test_003_instance_creation(tagoption_config):
-    test_tagoption = TagOption.get_or_create(**tagoption_config)
+def test_003_instance_creation():
+    test_tagoption = TagOption.get_or_create(Key="example", Value="example")
     assert str(test_tagoption) == str(test_tagoption.id)
     assert test_tagoption.__unicode__() == str(test_tagoption.id)
 
@@ -65,6 +65,18 @@ def test_005_instance_load(tagoption_config):
     assert test_tagoption is not arbitrary_tagoption
     assert test_tagoption == arbitrary_tagoption
     assert not test_tagoption != arbitrary_tagoption
+
+
+def test_006_instance_update(tagoption_config):
+    test_tagoption = TagOption.get_or_create(**tagoption_config)
+    assert test_tagoption.key == tagoption_config['Key']
+    assert test_tagoption.value == tagoption_config['Value']
+    assert test_tagoption.active
+
+    test_tagoption.update(Value="modified", Active=False)
+    assert test_tagoption.key == tagoption_config['Key']
+    assert test_tagoption.value == "modified"
+    assert test_tagoption.active is False
 
 
 def test_999_teardown():

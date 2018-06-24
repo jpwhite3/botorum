@@ -41,8 +41,7 @@ class Portfolio(BaseModel):
         Returns a Portfolio object.
         """
 
-        client = cls.session.client(cls.Meta.boto3_client_name)
-        response = client.describe_portfolio(AcceptLanguage=cls.Meta.language, Id=object_id)
+        response = cls.get_client().describe_portfolio(AcceptLanguage=cls.Meta.language, Id=object_id)
         object_details = cls._flatten(response)
         object_details['tag_options'] = response.get('TagOptions', [])
         return cls(**object_details)
