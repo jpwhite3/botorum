@@ -1,9 +1,0 @@
-{
-  "tests/test_servicecatalog.py::test_005_tagoption_loading": true,
-  "tests/test_servicecatalog.py::test_instance_creation_and_deletion": true,
-  "tests/test_servicecatalog.py::test_instance_load": true,
-  "tests/test_servicecatalog.py::test_list_generator": true,
-  "tests/test_servicecatalog.py::test_methods_exist": true,
-  "tests/test_servicecatalog_portfolio.py::test_006_tag_option_loading": true,
-  "tests/test_servicecatalog_tagoption.py::test_005_instance_get_or_create": true
-}
