@@ -1,5 +1,6 @@
 import sys
 import inspect
+import uuid
 import pytest
 
 from botorum.servicecatalog.models.tagoption import TagOption
@@ -29,6 +30,7 @@ def test_001_methods_exist():
     assert inspect.ismethod(TagOption.create)
     assert inspect.ismethod(TagOption.get)
     assert inspect.ismethod(TagOption.get_or_create)
+    assert inspect.ismethod(TagOption.search)
     assert inspect.isfunction(TagOption.update)
     assert inspect.isfunction(TagOption.delete)
     assert isinstance(TagOption.client, property)
@@ -37,9 +39,17 @@ def test_001_methods_exist():
 def test_002_list_generator(tagoption_config):
     test_tagoption = TagOption.create(**tagoption_config)
     all_tagoptions = [item for item in TagOption.list()]
-    assert len(all_tagoptions) == 1
+    assert len(all_tagoptions) >= 1
     assert isinstance(all_tagoptions[0], TagOption)
     assert test_tagoption == all_tagoptions[0]
+
+
+def test_002a_search(tagoption_config):
+    search_term = tagoption_config['Key']
+    search_attr = 'Key'
+    results = TagOption.search(search_attr, [search_term])
+    assert len(results) == 1
+    assert results[0].key == search_term
 
 
 def test_003_instance_creation():
@@ -73,9 +83,10 @@ def test_006_instance_update(tagoption_config):
     assert test_tagoption.value == tagoption_config['Value']
     assert test_tagoption.active
 
-    test_tagoption.update(Value="modified", Active=False)
+    arbitrary_value = str(uuid.uuid4())[:6]
+    test_tagoption.update(Value=arbitrary_value, Active=False)
     assert test_tagoption.key == tagoption_config['Key']
-    assert test_tagoption.value == "modified"
+    assert test_tagoption.value == arbitrary_value
     assert test_tagoption.active is False
 
 
@@ -83,5 +94,4 @@ def test_999_teardown():
     for p in TagOption.list():
         tagoption = TagOption(id=p.Id)
         tagoption.delete()
-
     assert len([item for item in TagOption.list()]) == 0

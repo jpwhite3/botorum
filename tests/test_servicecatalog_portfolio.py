@@ -3,6 +3,15 @@ import inspect
 import pytest
 
 from botorum.servicecatalog.models.portfolio import Portfolio
+from botorum.servicecatalog.models.tagoption import TagOption
+
+
+@pytest.fixture(scope="module")
+def tagoption_config():
+    return {
+        'Key': 'test-portfolio-tagoption',
+        'Value': 'arbitrary'
+    }
 
 
 @pytest.fixture(scope="module")
@@ -20,18 +29,6 @@ def portfolio_config():
     }
 
 
-@pytest.fixture(scope="module")
-def tag_options():
-    return [
-        {
-            'Key': 'string',
-            'Value': 'string',
-            'Active': True | False,
-            'Id': 'string'
-        },
-    ]
-
-
 def test_classes_exist():
     assert inspect.isclass(Portfolio)
 
@@ -44,14 +41,17 @@ def test_001_methods_exist():
     assert inspect.isfunction(Portfolio.__ne__)
     assert inspect.isfunction(Portfolio.__str__)
     assert inspect.isfunction(Portfolio.__unicode__)
+    assert isinstance(Portfolio.client, property)
     assert inspect.isfunction(Portfolio._set_attrs)
-    assert inspect.isfunction(Portfolio._flatten)
+    assert inspect.isfunction(Portfolio._flatten_object_details)
     assert inspect.isgeneratorfunction(Portfolio.list)
     assert inspect.ismethod(Portfolio.create)
     assert inspect.ismethod(Portfolio.get)
+    assert inspect.ismethod(Portfolio.search)
     assert inspect.isfunction(Portfolio.update)
     assert inspect.isfunction(Portfolio.delete)
-    assert isinstance(Portfolio.client, property)
+    assert inspect.isfunction(Portfolio.add_tag_option)
+    assert inspect.isfunction(Portfolio.remove_tag_option)
 
 
 def test_002_list_generator(portfolio_config):
@@ -59,6 +59,14 @@ def test_002_list_generator(portfolio_config):
     all_portfolios = [item for item in Portfolio.list()]
     assert len(all_portfolios) > 0
     assert isinstance(all_portfolios[0], Portfolio)
+
+
+def test_002a_search(portfolio_config):
+    search_term = portfolio_config['DisplayName']
+    search_attr = 'DisplayName'
+    results = Portfolio.search(search_attr, [search_term])
+    assert len(results) == 1
+    assert results[0].display_name == search_term
 
 
 def test_003_instance_creation(portfolio_config):
@@ -122,9 +130,20 @@ def test_006_instance_update(portfolio_config):
     assert test_portfolio.tags == {x['Key']: x['Value'] for x in update_params['AddTags']}
 
 
+def test_007_add_tagoption(portfolio_config, tagoption_config):
+    test_portfolio = Portfolio.create(**portfolio_config)
+    test_tagoption = TagOption.get_or_create(**tagoption_config)
+
+    test_portfolio.add_tag_option(test_tagoption)
+    assert len(test_portfolio.tag_options) == 1
+    assert test_portfolio.get_tag_option(test_tagoption.key)
+
+    with pytest.raises(LookupError):
+        assert test_portfolio.get_tag_option('NonExistantTagOptionKey')
+
+
 def test_999_teardown():
     for p in Portfolio.list():
         portfolio = Portfolio(id=p.Id)
         portfolio.delete()
-
     assert len([item for item in Portfolio.list()]) == 0

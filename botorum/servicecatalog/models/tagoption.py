@@ -10,9 +10,8 @@ class TagOption(BaseModel):
             PaginationConfig={'MaxItems': max_items, 'PageSize': page_size}
         )
         for response in response_iterator:
-            for tagoption_detail in response.get('TagOptionDetails'):
-                tagoption_id = tagoption_detail['Id']
-                yield TagOption(id=tagoption_id)
+            for object_details in response.get('TagOptionDetails', []):
+                yield TagOption(**object_details)
 
     @classmethod
     def create(cls, **kwargs):

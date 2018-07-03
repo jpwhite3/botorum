@@ -29,7 +29,7 @@ class BaseModel():
         return str(self.id)
 
     def __unicode__(self):
-        return str(self)
+        return self.__str__()
 
     def _set_attrs(self, **attrs):
         for attr, value in attrs.items():
@@ -57,6 +57,17 @@ class BaseModel():
     @abc.abstractmethod
     def get(cls, object_id):
         pass
+
+    @classmethod
+    def search(cls, attribute, search_terms):
+        assert search_terms, "At least one search term must exist"
+        search_results = []
+        for obj in cls.list():
+            attr_value = getattr(obj, attribute, "")
+            for search_term in search_terms:
+                if attr_value and search_term.lower() in attr_value.lower():
+                    search_results.append(obj)
+        return search_results
 
     @abc.abstractmethod
     def update(self, **kwargs):

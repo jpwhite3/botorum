@@ -60,5 +60,4 @@ target/
 
 # pyenv python configuration file
 .python-version
-.pytest_cache/v/cache/lastfailed
-.pytest_cache/v/cache/nodeids
+.pytest_cache
