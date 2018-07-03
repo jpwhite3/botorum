@@ -1,16 +1,17 @@
 from botorum.servicecatalog.models import BaseModel
 from botorum.servicecatalog.models.tagoption import TagOption
+from botorum.common import lazy_property
 
 
 class Portfolio(BaseModel):
 
-    tag_options = []
+    _tag_options = []
     tags = {}
 
     @classmethod
     def list(cls, max_items=1000, page_size=20):
         """
-        Generator function that iterates over all portfolios in the account. Paginates 20 items per API call by default, the max as of this writing.
+        Generator function that iterates over all portfolios in the account.
         Returns Portfolio object.
         https://boto3.readthedocs.io/en/latest/reference/services/servicecatalog.html#ServiceCatalog.Paginator.ListPortfolios
         """
@@ -53,9 +54,13 @@ class Portfolio(BaseModel):
         object_details = response.get('PortfolioDetail', {})
         if 'Tags' in response:
             object_details['tags'] = {x['Key']: x['Value'] for x in response.get('Tags', [])}
-        if 'TagOptions' in response:
-            object_details['tag_options'] = [TagOption(x) for x in response.get('TagOptions', [])]
         return object_details
+
+    @lazy_property
+    def tag_options(self):
+        response = self.client.describe_portfolio(AcceptLanguage=self.Meta.language, Id=self.id)
+        self._tag_options = [TagOption(**x) for x in response.get('TagOptions', [])]
+        return self._tag_options
 
     def update(self, **kwargs):
         """
@@ -91,23 +96,29 @@ class Portfolio(BaseModel):
         )
 
     def get_tag_option(self, key):
-        for tag_option in self.tag_options:
+        for tag_option in self._tag_options:
             if tag_option.key == key:
                 return tag_option
         raise LookupError('TagOption with key [%s] not associated to this portfolio' % key)
 
     def add_tag_option(self, tagoption):
-        response = self.client.associate_tag_option_with_resource(
-            ResourceId=self.id,
-            TagOptionId=tagoption.id
-        )
-        self.tag_options.append(tagoption)
-        return response
+        try:
+            self.client.associate_tag_option_with_resource(
+                ResourceId=self.id,
+                TagOptionId=tagoption.id
+            )
+            self._tag_options.append(tagoption)
+        except self.client.exceptions.DuplicateResourceException:
+            pass
+        return {}
 
     def remove_tag_option(self, tagoption):
-        response = self.client.disassociate_tag_option_from_resource(
-            ResourceId=self.id,
-            TagOptionId=tagoption.id
-        )
-        self.tag_options.remove(tagoption)
-        return response
+        try:
+            self.client.disassociate_tag_option_from_resource(
+                ResourceId=self.id,
+                TagOptionId=tagoption.id
+            )
+            self._tag_options.remove(tagoption)
+        except self.client.exceptions.ResourceNotFoundException:
+            pass
+        return {}

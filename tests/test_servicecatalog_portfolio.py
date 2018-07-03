@@ -42,6 +42,7 @@ def test_001_methods_exist():
     assert inspect.isfunction(Portfolio.__str__)
     assert inspect.isfunction(Portfolio.__unicode__)
     assert isinstance(Portfolio.client, property)
+    assert isinstance(Portfolio.tag_options, property)
     assert inspect.isfunction(Portfolio._set_attrs)
     assert inspect.isfunction(Portfolio._flatten_object_details)
     assert inspect.isgeneratorfunction(Portfolio.list)
@@ -65,7 +66,7 @@ def test_002a_search(portfolio_config):
     search_term = portfolio_config['DisplayName']
     search_attr = 'DisplayName'
     results = Portfolio.search(search_attr, [search_term])
-    assert len(results) == 1
+    assert len(results) >= 1
     assert results[0].display_name == search_term
 
 
@@ -104,9 +105,9 @@ def test_005_instance_load(portfolio_config):
 
 def test_006_instance_update(portfolio_config):
     test_portfolio = Portfolio.create(**portfolio_config)
-    assert test_portfolio.DisplayName == portfolio_config['DisplayName']
-    assert test_portfolio.Description == portfolio_config['Description']
-    assert test_portfolio.ProviderName == portfolio_config['ProviderName']
+    assert test_portfolio.display_name == portfolio_config['DisplayName']
+    assert test_portfolio.description == portfolio_config['Description']
+    assert test_portfolio.provider_name == portfolio_config['ProviderName']
     assert test_portfolio.tags == {x['Key']: x['Value'] for x in portfolio_config['Tags']}
 
     update_params = {
@@ -124,9 +125,9 @@ def test_006_instance_update(portfolio_config):
         ]
     }
     test_portfolio.update(**update_params)
-    assert test_portfolio.DisplayName == update_params["DisplayName"]
-    assert test_portfolio.Description == update_params["Description"]
-    assert test_portfolio.ProviderName == update_params["ProviderName"]
+    assert test_portfolio.display_name == update_params["DisplayName"]
+    assert test_portfolio.description == update_params["Description"]
+    assert test_portfolio.provider_name == update_params["ProviderName"]
     assert test_portfolio.tags == {x['Key']: x['Value'] for x in update_params['AddTags']}
 
 
@@ -135,11 +136,24 @@ def test_007_add_tagoption(portfolio_config, tagoption_config):
     test_tagoption = TagOption.get_or_create(**tagoption_config)
 
     test_portfolio.add_tag_option(test_tagoption)
+    test_portfolio.add_tag_option(test_tagoption)
     assert len(test_portfolio.tag_options) == 1
     assert test_portfolio.get_tag_option(test_tagoption.key)
 
     with pytest.raises(LookupError):
         assert test_portfolio.get_tag_option('NonExistantTagOptionKey')
+
+
+def test_008_remove_tagoption(portfolio_config, tagoption_config):
+    test_portfolio = Portfolio.create(**portfolio_config)
+    test_tagoption = TagOption.get_or_create(**tagoption_config)
+
+    test_portfolio.add_tag_option(test_tagoption)
+    assert len(test_portfolio.tag_options) == 1
+
+    test_portfolio.remove_tag_option(test_tagoption)
+    test_portfolio.remove_tag_option(test_tagoption)
+    assert len(test_portfolio.tag_options) == 0
 
 
 def test_999_teardown():
