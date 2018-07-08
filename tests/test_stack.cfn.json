@@ -1,0 +1,31 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Simple test template that does nothing but export a value",
+    "Parameters": {
+        "ExportName": {
+            "Description": "The name of the export",
+            "Type": "String"
+        },
+        "ExportValue": {
+            "Description": "The value for the export",
+            "Type": "String"
+        }
+    },
+    "Resources": {
+        "myWaitHandle": {
+            "Type": "AWS::CloudFormation::WaitConditionHandle",
+            "Properties": {}
+        }
+    },
+    "Outputs": {
+        "CustomExport": {
+            "Description": "Information about the value",
+            "Value": {
+                "Ref": "ExportValue"
+            },
+            "Export": {
+                "Name": {"Ref": "ExportName"}
+            }
+        }
+    }
+}

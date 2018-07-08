@@ -20,13 +20,14 @@ class BaseModel():
             raise AttributeError("Attribute not found")
 
     def __eq__(self, other):
-        return self.id == other.id
+        return getattr(self, self.Meta.identity_attribute_name) == getattr(other, self.Meta.identity_attribute_name)
 
     def __ne__(self, other):
-        return self.id != other.id
+        return getattr(self, self.Meta.identity_attribute_name) != getattr(other, self.Meta.identity_attribute_name)
 
     def __str__(self):
-        return str(self.id)
+        identity = getattr(self, self.Meta.identity_attribute_name)
+        return str(identity)
 
     def __unicode__(self):
         return self.__str__()
@@ -80,3 +81,4 @@ class BaseModel():
     class Meta:
         boto3_client_name = 'servicecatalog'
         language = 'en'
+        identity_attribute_name = 'id'
