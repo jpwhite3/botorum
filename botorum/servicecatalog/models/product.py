@@ -1,3 +1,4 @@
+from botorum.common import merge_dicts
 from botorum.servicecatalog.models import BaseModel
 
 
@@ -45,7 +46,7 @@ class Product(BaseModel):
             product_view_summary = product_view_detail.pop('ProductViewSummary', {})
         elif 'ProductViewSummary' in response:
             product_view_summary = response.get('ProductViewSummary', {})
-        object_details = {**product_view_detail, **product_view_summary}
+        object_details = merge_dicts(product_view_detail, product_view_summary)
         if 'Tags' in response:
             object_details['tags'] = {x['Key']: x['Value'] for x in response.get('Tags', [])}
         return object_details
