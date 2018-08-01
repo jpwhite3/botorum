@@ -63,9 +63,6 @@ def test_001_methods_exist():
     assert inspect.ismethod(Product.search)
     assert inspect.isfunction(Product.update)
     assert inspect.isfunction(Product.delete)
-    # assert isinstance(Product.tag_options, property)
-    # assert inspect.isfunction(Product.add_tag_option)
-    # assert inspect.isfunction(Product.remove_tag_option)
 
 
 def test_002_list_generator(product_config):
@@ -112,6 +109,38 @@ def test_005_instance_load(product_config):
     assert test_product is not arbitrary_product
     assert test_product == arbitrary_product
     assert not test_product != arbitrary_product
+
+
+def test_006_instance_update(product_config):
+    test_product = Product.create(**product_config)
+    assert test_product.name == product_config['Name']
+    assert test_product.owner == product_config['Owner']
+    assert test_product.short_description == product_config['Description']
+    assert test_product.tags == {x['Key']: x['Value'] for x in product_config['Tags']}
+
+    update_params = {
+        'Name': 'NewValue',
+        'Owner': 'NewValue',
+        'Description': 'NewValue',
+        'Distributor': 'NewValue',
+        'SupportDescription': 'NewValue',
+        'SupportEmail': 'NewValue@example.com',
+        'SupportUrl': 'http://www.newexample.com',
+        'AddTags': [
+            {
+                'Key': 'NewKey',
+                'Value': 'NewValue'
+            },
+        ],
+        'RemoveTags': [
+            'arbitrary',
+        ]
+    }
+    test_product.update(**update_params)
+    assert test_product.name == update_params['Name']
+    assert test_product.owner == update_params['Owner']
+    assert test_product.short_description == update_params['Description']
+    assert test_product.tags == {x['Key']: x['Value'] for x in update_params['AddTags']}
 
 
 @pytest.mark.teardown

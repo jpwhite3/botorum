@@ -46,13 +46,27 @@ class Product(BaseModel):
             product_view_summary = product_view_detail.pop('ProductViewSummary', {})
         elif 'ProductViewSummary' in response:
             product_view_summary = response.get('ProductViewSummary', {})
-        object_details = merge_dicts(product_view_detail, product_view_summary)
+        object_details = merge_dicts(product_view_summary, product_view_detail)
         if 'Tags' in response:
             object_details['tags'] = {x['Key']: x['Value'] for x in response.get('Tags', [])}
         return object_details
 
     def update(self, **kwargs):
-        pass
+        response = self.client.update_product(
+            AcceptLanguage=self.Meta.language,
+            Id=self.product_id,
+            Name=kwargs.get('Name', self.name),
+            Owner=kwargs.get('Owner', self.owner),
+            Description=kwargs.get('Description', self.short_description),
+            Distributor=kwargs.get('Distributor', self.distributor),
+            SupportDescription=kwargs.get('SupportDescription', self.support_description),
+            SupportEmail=kwargs.get('SupportEmail', self.support_email),
+            SupportUrl=kwargs.get('SupportUrl', self.support_url),
+            AddTags=kwargs.get('AddTags', []),
+            RemoveTags=kwargs.get('RemoveTags', [])
+        )
+        object_details = self._flatten_object_details(response)
+        self._set_attrs(**object_details)
 
     def delete(self):
         return self.client.delete_product(
