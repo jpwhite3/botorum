@@ -1,4 +1,4 @@
-version: '1'
+version: '2'
 
 vars:
     BROWSER: ./bin/no-arch/open_browser.py
@@ -12,7 +12,8 @@ tasks:
     help:
         desc: Show all avialable tasks.
         cmds:
-            - task --list
+            - cmd: task --list
+              silent: true
 
     clean:
         desc: Run all clean related tasks.
@@ -70,8 +71,6 @@ tasks:
 
     coverage:
         desc: Run tests then report coverage.
-        vars:
-            BROWSER: ./bin/no-arch/open_browser.py
         cmds:
             - coverage run --source botorum -m pytest
             - coverage report -m
@@ -80,8 +79,6 @@ tasks:
 
     docs:
         desc: Generate documentation.
-        vars:
-            BROWSER: ./bin/no-arch/open_browser.py
         cmds:
             - rm -f docs/botorum.rst
             - rm -f docs/modules.rst
