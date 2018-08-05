@@ -1,7 +1,7 @@
 version: '1'
 
 vars:
-    BROWSER: ./bin/open_browser.py
+    BROWSER: ./bin/no-arch/open_browser.py
 
 tasks:
 
@@ -71,7 +71,7 @@ tasks:
     coverage:
         desc: Run tests then report coverage.
         vars:
-            BROWSER: ./bin/open_browser.py
+            BROWSER: ./bin/no-arch/open_browser.py
         cmds:
             - coverage run --source botorum -m pytest
             - coverage report -m
@@ -81,7 +81,7 @@ tasks:
     docs:
         desc: Generate documentation.
         vars:
-            BROWSER: ./bin/open_browser.py
+            BROWSER: ./bin/no-arch/open_browser.py
         cmds:
             - rm -f docs/botorum.rst
             - rm -f docs/modules.rst
@@ -89,12 +89,6 @@ tasks:
             - make -C docs clean
             - make -C docs html
             - python "{{.BROWSER}}" docs/_build/html/index.html
-
-    servedocs:
-        desc: Generate documentation then serve them over http.
-        deps: [docs]
-        cmds:
-            - watchmedo shell-command -p '*.rst' -c 'make -C docs html' -R -D .
 
     release:
         desc: Build then release new version to pypi.
