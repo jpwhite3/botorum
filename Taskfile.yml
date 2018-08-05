@@ -1,0 +1,118 @@
+version: '1'
+
+vars:
+    BROWSER: ./bin/open_browser.py
+
+tasks:
+
+    default:
+        cmds:
+            - task: help
+
+    help:
+        desc: Show all avialable tasks.
+        cmds:
+            - task --list
+
+    clean:
+        desc: Run all clean related tasks.
+        cmds:
+            - task: clean-build
+            - task: clean-pyc
+            - task: clean-test
+
+    clean-build:
+        desc: Delete all build related artifacts.
+        cmds:
+            - rm -fr build/
+            - rm -fr dist/
+            - rm -fr .eggs/
+            - find . -name '*.egg-info' -exec rm -fr {} +
+            - find . -name '*.egg' -exec rm -f {} +
+
+    clean-pyc:
+        desc: Delete all python bytecode and cache files.
+        cmds:
+            - find . -name '*.pyc' -exec rm -f {} +
+            - find . -name '*.pyo' -exec rm -f {} +
+            - find . -name '*~' -exec rm -f {} +
+            - find . -name '__pycache__' -exec rm -fr {} +
+
+    clean-test:
+        desc: Delete all test related artifacts.
+        cmds:
+            - rm -fr .tox/
+            - rm -f .coverage
+            - rm -fr htmlcov/
+
+    lint:
+        desc: Automatically clean then lint all python files.
+        cmds:
+            - find ./botorum -name '*.py' -exec autopep8 -i --max-line-length=300 {} +
+            - find ./tests -name '*.py' -exec autopep8 -i --max-line-length=300 {} +
+            - flake8 --max-line-length=300 --ignore E501 botorum tests
+            - pylint --max-line-length=300 ./botorum
+
+    test:
+        desc: Run tests.
+        cmds:
+            - py.test
+
+    test-debug:
+        desc: Run tests with debugging enabled.
+        cmds:
+            - py.test --pdb
+
+    test-all:
+        desc: Run tests with tox.
+        cmds:
+            - tox
+
+    coverage:
+        desc: Run tests then report coverage.
+        vars:
+            BROWSER: ./bin/open_browser.py
+        cmds:
+            - coverage run --source botorum -m pytest
+            - coverage report -m
+            - coverage html
+            - python "{{.BROWSER}}" htmlcov/index.html
+
+    docs:
+        desc: Generate documentation.
+        vars:
+            BROWSER: ./bin/open_browser.py
+        cmds:
+            - rm -f docs/botorum.rst
+            - rm -f docs/modules.rst
+            - sphinx-apidoc -o docs/ botorum
+            - make -C docs clean
+            - make -C docs html
+            - python "{{.BROWSER}}" docs/_build/html/index.html
+
+    servedocs:
+        desc: Generate documentation then serve them over http.
+        deps: [docs]
+        cmds:
+            - watchmedo shell-command -p '*.rst' -c 'make -C docs html' -R -D .
+
+    release:
+        desc: Build then release new version to pypi.
+        deps: [clean]
+        cmds:
+            - python setup.py sdist upload
+            - python setup.py bdist_wheel upload
+
+    dist:
+        desc: Build source and binary distribtion.
+        deps: [clean]
+        cmds:
+            - python setup.py sdist
+            - python setup.py bdist_wheel
+            - ls -l dist
+
+    install:
+        desc: Build and install.
+        deps: [clean]
+        cmds:
+            - python setup.py install
