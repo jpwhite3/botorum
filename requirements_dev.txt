@@ -4,7 +4,7 @@ attrs==18.2.0
 autopep8==1.4.3
 babel==2.6.0
 bumpversion==0.5.3
-certifi==2018.4.16
+certifi==2018.10.15
 chardet==3.0.4
 coverage==4.5.1
 docutils==0.14
