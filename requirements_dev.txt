@@ -34,7 +34,7 @@ pytz==2019.3
 requests==2.23.0
 six==1.14.0
 snowballstemmer==2.0.0
-sphinx==2.4.4
+sphinx==3.0.1
 sphinxcontrib-websupport==1.2.0
 tox==3.14.5
 urllib3==1.25.8
