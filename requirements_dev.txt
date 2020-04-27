@@ -24,7 +24,7 @@ pycodestyle==2.5.0
 pyflakes==2.2.0
 pygments==2.6.1
 pylint==2.5.0; python_version >= '3.0'
-pylint==2.4.4; python_version <= '3.0'
+pylint==2.5.0; python_version <= '3.0'
 pyparsing==2.4.6
 pytest-cov==2.8.1
 pytest-pylint==0.15.1
