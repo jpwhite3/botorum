@@ -25,7 +25,7 @@ pyflakes==2.2.0
 pygments==2.6.1
 pylint==2.5.0; python_version >= '3.0'
 pylint==2.5.0; python_version <= '3.0'
-pyparsing==2.4.6
+pyparsing==2.4.7
 pytest-cov==2.8.1
 pytest-pylint==0.15.1
 pytest-runner==5.2
