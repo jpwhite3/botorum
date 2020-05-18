@@ -8,7 +8,7 @@ certifi==2020.4.5.1
 chardet==3.0.4
 coverage==5.1
 docutils==0.16
-flake8==3.7.9
+flake8==3.8.1
 idna==2.9
 imagesize==1.2.0
 isort==4.3.21
