@@ -32,7 +32,7 @@ pytest-runner==5.2
 pytest==5.4.2
 pytz==2020.1
 requests==2.23.0
-six==1.14.0
+six==1.15.0
 snowballstemmer==2.0.0
 sphinx==3.0.3
 sphinxcontrib-websupport==1.2.2
