@@ -23,8 +23,8 @@ py==1.8.1
 pycodestyle==2.6.0
 pyflakes==2.2.0
 pygments==2.6.1
-pylint==2.5.2; python_version >= '3.0'
-pylint==2.5.2; python_version <= '3.0'
+pylint==2.5.3; python_version >= '3.0'
+pylint==2.5.3; python_version <= '3.0'
 pyparsing==2.4.7
 pytest-cov==2.8.1
 pytest-pylint==0.17.0
