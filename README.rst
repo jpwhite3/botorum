@@ -13,10 +13,6 @@ botorum
         :target: https://botorum.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-.. image:: https://pyup.io/repos/github/jpwhite3/botorum/shield.svg
-     :target: https://pyup.io/repos/github/jpwhite3/botorum/
-     :alt: Updates
-
 
 Extentions for boto3 that make life in AWS easier
 
@@ -38,4 +34,3 @@ This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypack
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
 
- [ ~ Dependencies scanned by PyUp.io ~ ]
