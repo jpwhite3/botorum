@@ -8,7 +8,7 @@ certifi==2020.6.20
 chardet==3.0.4
 coverage==5.1
 docutils==0.16
-flake8==3.8.2
+flake8==3.8.3
 idna==2.9
 imagesize==1.2.0
 isort==4.3.21
@@ -26,7 +26,7 @@ pygments==2.6.1
 pylint==2.5.3; python_version >= '3.0'
 pylint==2.5.3; python_version <= '3.0'
 pyparsing==2.4.7
-pytest-cov==2.9.0
+pytest-cov==2.10.0
 pytest-pylint==0.17.0
 pytest-runner==5.2
 pytest==5.4.3
@@ -34,9 +34,9 @@ pytz==2020.1
 requests==2.24.0
 six==1.15.0
 snowballstemmer==2.0.0
-sphinx==3.1.0
+sphinx==3.1.1
 sphinxcontrib-websupport==1.2.2
 tox==3.15.2
 urllib3==1.25.9
-virtualenv==20.0.23
+virtualenv==20.0.24
 wrapt==1.12.1
