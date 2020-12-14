@@ -1,6 +1,6 @@
 alabaster==0.7.12
 atomicwrites==1.4.0
-attrs==20.2.0
+attrs==20.3.0
 autopep8==1.5.3
 babel==2.9.0
 bumpversion==0.6.0
