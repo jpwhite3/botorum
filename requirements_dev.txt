@@ -7,7 +7,7 @@ bumpversion==0.6.0
 certifi==2021.5.30
 chardet==4.0.0
 coverage==6.0.1
-docutils==0.17.1
+docutils==0.18
 flake8==3.8.3
 idna==3.2
 imagesize==1.2.0
