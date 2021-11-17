@@ -33,7 +33,7 @@ pytest==5.4.3
 pytz==2021.3
 requests==2.26.0
 six==1.15.0
-snowballstemmer==2.1.0
+snowballstemmer==2.2.0
 sphinx==3.1.1
 sphinxcontrib-websupport==1.2.4
 tox==3.15.2
