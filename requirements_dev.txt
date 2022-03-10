@@ -39,4 +39,4 @@ sphinxcontrib-websupport==1.2.4
 tox==3.15.2
 virtualenv==20.13.3
 urllib3==1.26.8
-wrapt==1.13.3
+wrapt==1.14.0
