@@ -36,7 +36,7 @@ six==1.15.0
 snowballstemmer==2.2.0
 sphinx==4.5.0
 sphinxcontrib-websupport==1.2.4
-tox==3.15.2
+tox==3.25.0
 virtualenv==20.14.1
 urllib3==1.26.9
 wrapt==1.14.0
