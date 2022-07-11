@@ -1,5 +1,5 @@
 alabaster==0.7.12
-atomicwrites==1.4.0
+atomicwrites==1.4.1
 attrs==21.4.0
 autopep8==1.6.0
 babel==2.10.3
