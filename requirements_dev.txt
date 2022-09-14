@@ -9,7 +9,7 @@ chardet==5.0.0
 docutils==0.18.1
 coverage==6.2
 flake8==5.0.4
-idna==3.3
+idna==3.4
 imagesize==1.4.1
 isort==5.8.0
 jinja2==3.0.3
